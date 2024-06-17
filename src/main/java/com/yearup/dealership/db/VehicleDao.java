@@ -41,6 +41,8 @@ public class VehicleDao {
 
     public void removeVehicle(String VIN) {
         // TODO: Implement the logic to remove a vehicle
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement()
     }
 
     public List<Vehicle> searchByPriceRange(double minPrice, double maxPrice) {

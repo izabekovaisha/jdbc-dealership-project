@@ -290,7 +290,7 @@ public class Main {
         Vehicle vehicle = new Vehicle(vin, make, model, year, false, color, type, mileage, price);
         vehicleDao.addVehicle(vehicle);
         inventoryDao.addVehicleToInventory(vin, dealershipId);
-
+        System.out.println("Vehicle added to inventory successfully!");
     }
 
     private static void removeVehicleMenu(VehicleDao vehicleDao, InventoryDao inventoryDao, Scanner scanner) {
