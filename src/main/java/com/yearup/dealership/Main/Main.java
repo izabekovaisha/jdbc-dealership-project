@@ -272,6 +272,9 @@ public class Main {
         System.out.print("Enter the color: ");
         String color = scanner.nextLine();
 
+        System.out.print("Enter the type: ");
+        String type = scanner.nextLine();
+
         System.out.print("Enter the mileage: ");
         int mileage = scanner.nextInt();
         scanner.nextLine(); // Consume the newline character
@@ -279,9 +282,6 @@ public class Main {
         System.out.print("Enter the price: ");
         double price = scanner.nextDouble();
         scanner.nextLine(); // Consume the newline character
-
-        System.out.print("Enter the type: ");
-        String type = scanner.nextLine();
 
         System.out.print("Enter the dealership ID: ");
         int dealershipId = scanner.nextInt();
@@ -291,7 +291,6 @@ public class Main {
         vehicleDao.addVehicle(vehicle);
         inventoryDao.addVehicleToInventory(vin, dealershipId);
 
-        System.out.println("Vehicle added successfully.");
     }
 
     private static void removeVehicleMenu(VehicleDao vehicleDao, InventoryDao inventoryDao, Scanner scanner) {

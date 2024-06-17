@@ -19,6 +19,7 @@ public class VehicleDao {
         try(Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(
                     "INSERT INTO vehicles (VIN, make, model, year, SOLD, color, vehicleType, odometer, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)" )) {
+
             statement.setString(1, vehicle.getVin());
             statement.setString(2, vehicle.getMake());
             statement.setString(3, vehicle.getModel());
@@ -28,15 +29,14 @@ public class VehicleDao {
             statement.setString(7, vehicle.getVehicleType());
             statement.setInt(8, vehicle.getOdometer());
             statement.setDouble(9, vehicle.getPrice());
-            statement.executeUpdate();
 
            int rows = statement.executeUpdate();
+            System.out.println(rows > 0 ? "Vehicle added successfully!" : "Failed to add the vehicle.");
 
-        } catch (SQLException e) {
-            System.err.println("");
+        } catch (Exception e) {
+            System.err.println("Error occurred while adding the vehicle: " + e.getMessage());
             e.printStackTrace();
         }
-    }
     }
 
     public void removeVehicle(String VIN) {

@@ -15,9 +15,17 @@ public class InventoryDao {
     public void addVehicleToInventory(String vin, int dealershipId) {
         // TODO: Implement the logic to add a vehicle to the inventory
         try (Connection connection = dataSource.getConnection();
-        PreparedStatement addVehicleStatement = connection.prepareStatement("INSERT INTO inventory (VIN, dealership_id) VALUES (?, ?)")) {
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        PreparedStatement statement = connection.prepareStatement("INSERT INTO inventory (VIN, dealership_id) VALUES (?, ?)")) {
+
+            statement.setString(1, vin);
+            statement.setInt(2, dealershipId);
+
+            int rows = statement.executeUpdate();
+            System.out.println(rows > 0 ? "Vehicle added to inventory successfully!" : "Failed to add vehicle to inventory.");
+
+        } catch (Exception e) {
+            System.err.println("Error occurred while adding the vehicle to inventory: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
