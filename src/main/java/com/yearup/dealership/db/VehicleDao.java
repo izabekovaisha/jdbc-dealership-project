@@ -143,8 +143,33 @@ public class VehicleDao {
     }
 
     public List<Vehicle> searchByColor(String color) {
-        // TODO: Implement the logic to search vehicles by color
-        return new ArrayList<>();
+        List<Vehicle> vehicles = new ArrayList<>();
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM vehicles WHERE color = ?")) {
+
+            statement.setString(1, color);
+
+            try (ResultSet results = statement.executeQuery()) {
+                while (results.next()) {
+                    String vin = results.getString("vin");
+                    String make = results.getString("make");
+                    String model = results.getString("model");
+                    int year = results.getInt("year");
+                    boolean sold = results.getBoolean("sold");
+                    String vehicleType = results.getString("vehicleType");
+                    int odometer = results.getInt("odometer");
+                    double price = results.getDouble("price");
+
+                    Vehicle vehicle = new Vehicle(vin, make, model, year, sold, color, vehicleType, odometer, price);
+                    vehicles.add(vehicle);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error occurred while searching vehicles by color: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return vehicles;
     }
 
     public List<Vehicle> searchByMileageRange(int minMileage, int maxMileage) {
