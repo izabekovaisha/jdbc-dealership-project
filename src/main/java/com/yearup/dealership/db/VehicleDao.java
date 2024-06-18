@@ -15,10 +15,9 @@ public class VehicleDao {
     }
 
     public void addVehicle(Vehicle vehicle) {
-        // TODO: Implement the logic to add a vehicle
-        try(Connection connection = dataSource.getConnection();
-            PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO vehicles (VIN, make, model, year, SOLD, color, vehicleType, odometer, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(
+                     "INSERT INTO vehicles (VIN, make, model, year, SOLD, color, vehicleType, odometer, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
 
             statement.setString(1, vehicle.getVin());
             statement.setString(2, vehicle.getMake());
@@ -36,12 +35,13 @@ public class VehicleDao {
         }
     }
 
-    public void removeVehicle(String VIN) {
-        // TODO: Implement the logic to remove a vehicle
-        try(Connection connection = dataSource.getConnection();
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM vehicles WHERE VIN = '?'")) {
+    public void removeVehicle(String vin) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement("DELETE FROM vehicles WHERE VIN = ?")) {
 
-            statement.setString(1, VIN);
+            statement.setString(1, vin);
+            statement.executeUpdate();
+
         } catch (Exception e) {
             System.err.println("Error occurred while removing the vehicle: " + e.getMessage());
             e.printStackTrace();
@@ -50,7 +50,33 @@ public class VehicleDao {
 
     public List<Vehicle> searchByPriceRange(double minPrice, double maxPrice) {
         // TODO: Implement the logic to search vehicles by price range
-        return new ArrayList<>();
+        List<Vehicle> vehicles = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM vehicles WHERE price >= ? AND price <= ?")) {
+
+            statement.setDouble(1, minPrice);
+            statement.setDouble(2, maxPrice);
+            try (ResultSet results = statement.executeQuery()) {
+                while (results.next()) {
+                    String vin = results.getString("vin");
+                    String make = results.getString("make");
+                    String model = results.getString("model");
+                    int year = results.getInt("year");
+                    boolean sold = results.getBoolean("sold");
+                    String color = results.getString("color");
+                    String vehicleType = results.getString("vehicleType");
+                    int odometer = results.getInt("odometer");
+                    double price = results.getDouble("price");
+
+                    Vehicle vehicle = new Vehicle(vin, make, model, year, sold, color, vehicleType, odometer, price);
+                    vehicles.add(vehicle);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error occurred while searching vehicles by price range: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return vehicles;
     }
 
     public List<Vehicle> searchByMakeModel(String make, String model) {
