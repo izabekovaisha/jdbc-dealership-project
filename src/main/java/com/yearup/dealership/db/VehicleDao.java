@@ -49,13 +49,14 @@ public class VehicleDao {
     }
 
     public List<Vehicle> searchByPriceRange(double minPrice, double maxPrice) {
-        // TODO: Implement the logic to search vehicles by price range
         List<Vehicle> vehicles = new ArrayList<>();
+
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM vehicles WHERE price >= ? AND price <= ?")) {
 
             statement.setDouble(1, minPrice);
             statement.setDouble(2, maxPrice);
+
             try (ResultSet results = statement.executeQuery()) {
                 while (results.next()) {
                     String vin = results.getString("vin");
@@ -80,8 +81,33 @@ public class VehicleDao {
     }
 
     public List<Vehicle> searchByMakeModel(String make, String model) {
-        // TODO: Implement the logic to search vehicles by make and model
-        return new ArrayList<>();
+        List<Vehicle> vehicles = new ArrayList<>();
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM vehicles WHERE make = ? AND model = ?")) {
+
+            statement.setString(1, make);
+            statement.setString(2, model);
+
+            try (ResultSet results = statement.executeQuery()) {
+                while (results.next()) {
+                    String vin = results.getString("vin");
+                    int year = results.getInt("year");
+                    boolean sold = results.getBoolean("sold");
+                    String color = results.getString("color");
+                    String vehicleType = results.getString("vehicleType");
+                    int odometer = results.getInt("odometer");
+                    double price = results.getDouble("price");
+
+                    Vehicle vehicle = new Vehicle(vin, make, model, year, sold, color, vehicleType, odometer, price);
+                    vehicles.add(vehicle);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error occurred while searching vehicles by make and model: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return vehicles;
     }
 
     public List<Vehicle> searchByYearRange(int minYear, int maxYear) {
