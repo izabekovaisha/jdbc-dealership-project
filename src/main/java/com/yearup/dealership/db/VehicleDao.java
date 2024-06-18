@@ -205,8 +205,33 @@ public class VehicleDao {
     }
 
     public List<Vehicle> searchByType(String type) {
-        // TODO: Implement the logic to search vehicles by type
-        return new ArrayList<>();
+        List<Vehicle> vehicles = new ArrayList<>();
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM vehicles WHERE vehicleType = ?")) {
+
+            statement.setString(1, type);
+
+            try (ResultSet results = statement.executeQuery()) {
+                while (results.next()) {
+                    String vin = results.getString("vin");
+                    String make = results.getString("make");
+                    String model = results.getString("model");
+                    int year = results.getInt("year");
+                    boolean sold = results.getBoolean("sold");
+                    String color = results.getString("color");
+                    int odometer = results.getInt("odometer");
+                    double price = results.getDouble("price");
+
+                    Vehicle vehicle = new Vehicle(vin, make, model, year, sold, color, type, odometer, price);
+                    vehicles.add(vehicle);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error occurred while searching vehicles by color: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return vehicles;
     }
 
     private Vehicle createVehicleFromResultSet(ResultSet resultSet) throws SQLException {
