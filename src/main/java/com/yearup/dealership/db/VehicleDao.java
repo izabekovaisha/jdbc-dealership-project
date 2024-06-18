@@ -18,7 +18,7 @@ public class VehicleDao {
         // TODO: Implement the logic to add a vehicle
         try(Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO vehicles (VIN, make, model, year, SOLD, color, vehicleType, odometer, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)" )) {
+                    "INSERT INTO vehicles (VIN, make, model, year, SOLD, color, vehicleType, odometer, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
 
             statement.setString(1, vehicle.getVin());
             statement.setString(2, vehicle.getMake());
@@ -30,9 +30,6 @@ public class VehicleDao {
             statement.setInt(8, vehicle.getOdometer());
             statement.setDouble(9, vehicle.getPrice());
 
-           int rows = statement.executeUpdate();
-            System.out.println(rows > 0 ? "Vehicle added successfully!" : "Failed to add the vehicle.");
-
         } catch (Exception e) {
             System.err.println("Error occurred while adding the vehicle: " + e.getMessage());
             e.printStackTrace();
@@ -42,7 +39,13 @@ public class VehicleDao {
     public void removeVehicle(String VIN) {
         // TODO: Implement the logic to remove a vehicle
         try(Connection connection = dataSource.getConnection();
-            PreparedStatement statement = connection.prepareStatement()
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM vehicles WHERE VIN = '?'")) {
+
+            statement.setString(1, VIN);
+        } catch (Exception e) {
+            System.err.println("Error occurred while removing the vehicle: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public List<Vehicle> searchByPriceRange(double minPrice, double maxPrice) {
