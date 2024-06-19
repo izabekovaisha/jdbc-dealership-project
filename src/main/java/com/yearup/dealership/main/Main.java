@@ -1,4 +1,4 @@
-package com.yearup.dealership.Main;
+package com.yearup.dealership.main;
 
 import com.yearup.dealership.db.InventoryDao;
 import com.yearup.dealership.db.LeaseDao;
@@ -9,8 +9,6 @@ import com.yearup.dealership.models.SalesContract;
 import com.yearup.dealership.models.Vehicle;
 import org.apache.commons.dbcp2.BasicDataSource;
 
-import javax.sql.DataSource;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
