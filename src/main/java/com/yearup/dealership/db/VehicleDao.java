@@ -228,7 +228,7 @@ public class VehicleDao {
                 }
             }
         } catch (Exception e) {
-            System.err.println("Error occurred while searching vehicles by color: " + e.getMessage());
+            System.err.println("Error occurred while searching vehicles by type: " + e.getMessage());
             e.printStackTrace();
         }
         return vehicles;
