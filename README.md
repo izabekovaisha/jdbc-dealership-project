@@ -122,5 +122,8 @@ Follow these steps to get your application running within IntelliJ IDEA:
 4. Find the main class with the public static void main(String[] args) method.
 5. Right-click on the file and select 'Run 'YourMainClassName.main()'' to start the application.
 
+### Demo
+![Recording2024-06-20001033-ezgif com-optimize](https://github.com/izabekovaisha/jdbc-dealership-project/assets/166551874/2f680201-6e48-47df-abba-e9fe1a0b7d0b)
+
 ### Contact
 For any questions or issues, please contact [izabekovaisha@gmail.com]().
